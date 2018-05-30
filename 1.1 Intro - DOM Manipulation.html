@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <title>DOM Manipulation</title>
+</head>
+
+<style>
+  body {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 14px;
+  }
+
+  #wrapper {
+    height: 220px;
+  }
+
+  .person {
+    height: 20px;
+    position: relative;
+  }
+
+  .person .label {
+    width: 90px;
+    text-align: right;
+  }
+
+  .person .bar {
+    height: 19px;
+    background-color: steelblue;
+    position: absolute;
+    left: 100px;
+  }
+
+  .person div {
+    display: inline-block;
+  }
+
+  #data-view {
+    padding: 10px;
+    color: #777;
+    font-size: 12px;
+    width: 700px;
+  }
+</style>
+
+<body>
+
+  <div id="wrapper"></div>
+
+  <div class="menu">
+    <button onClick="updateScores();">Update scores</button>
+    <button onClick="addPerson();">Add person</button>
+    <button onClick="removePerson();">Remove person</button>
+  </div>
+
+  <div id="data-view"></div>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script>
+    const names = ['Andy', 'Beth', 'Craig', 'Diane', 'Evelyn', 'Fred', 'Georgia', 'Harry', 'Isabel', 'John'];
+    const barWidth = 400;
+    const barScale = d3.scaleLinear().domain([0, 100]).range([0, barWidth]);
+    const randomInteger = () => Math.floor(10 * Math.random());
+    let myData = [];
+
+    function initialiseData() {
+      myData = [{
+          "name": "Andy",
+          "score": 37
+        },
+        {
+          "name": "Beth",
+          "score": 39
+        },
+        {
+          "name": "Craig",
+          "score": 31
+        },
+        {
+          "name": "Diane",
+          "score": 35
+        },
+        {
+          "name": "Evelyn",
+          "score": 38
+        }
+      ];
+    }
+
+    function updateBars(data) {
+      let u = d3.select('#wrapper')
+        .selectAll('.person')
+        .data(data);
+
+      let entering = u.enter()
+        .append('div')
+        .classed('person', true);
+
+      entering.append('div')
+        .classed('label', true)
+        .text(d => d.name);
+
+      entering.append('div')
+        .classed('bar', true);
+
+      entering.merge(u)
+        .select('.bar')
+        .transition()
+        .style('width', d => barScale(d.score) + 'px');
+
+      u.exit().remove();
+    }
+
+    function updateDataView(data) {
+      d3.select('#data-view')
+        .text('Array: ' + JSON.stringify(data));
+    }
+
+    function update() {
+      updateBars(myData);
+      updateDataView(myData);
+    }
+
+    function addPerson() {
+      if (myData.length === 10) return;
+
+      myData.push({
+        name: names[myData.length],
+        score: 30 + randomInteger()
+      });
+
+      update();
+    }
+
+    function removePerson() {
+      if (myData.length === 0) return;
+
+      myData.pop();
+
+      update();
+    }
+
+    function updateScores() {
+      myData.forEach(d => d.score = 30 + randomInteger() );
+
+      update();
+    }
+
+    initialiseData();
+    update();
+  </script>
+</body>
+
+</html>

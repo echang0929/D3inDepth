@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <title>SVG Line Generator</title>
+</head>
+
+<style>
+  path {
+    fill: none;
+    stroke: #aaa;
+  }
+</style>
+
+<body>
+  <svg width="600" height="100">
+		<path transform="translate(200, 0)" />
+	</svg>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script>
+    let data = [
+      [0, 50],
+      [100, 80],
+      [200, 40],
+      [300, 60],
+      [400, 30]
+    ];
+
+    const lineGenerator = d3.line()
+      .curve(d3.curveNatural);
+    let pathString = lineGenerator(data);
+
+    d3.select('path')
+      .attr('d', pathString);
+  </script>
+</body>
+
+</html>

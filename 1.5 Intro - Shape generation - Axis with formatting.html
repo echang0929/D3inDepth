@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <title>SVG Axis</title>
+</head>
+
+<style>
+  path {
+    fill: none;
+    stroke: #aaa;
+  }
+</style>
+
+<body>
+  <svg width="700" height="40">
+		<g class="axis" transform="translate(20, 20)" />
+	</svg>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script>
+    let scale = d3.scaleLinear().domain([0, 1000000]).range([0, 600]);
+    let format = d3.format(",");
+    let axis = d3.axisTop().scale(scale)
+      .tickFormat(function(d) {
+        return '£' + format(d);
+      })
+      .ticks(5);
+
+    d3.select('.axis')
+      .call(axis);
+  </script>
+</body>
+
+</html>

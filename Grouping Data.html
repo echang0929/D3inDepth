@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grouping Data - learnjsdata</title>
+</head>
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script>
+// learnjsdata.com/  --------
+
+    var expenses = [{"name":"jim","amount":34,"date":"11/12/2015"},
+        {"name":"carl","amount":120.11,"date":"11/12/2015"},
+        {"name":"jim","amount":45,"date":"12/01/2015"},
+        {"name":"stacy","amount":12.00,"date":"01/04/2016"},
+        {"name":"stacy","amount":34.10,"date":"01/04/2016"},
+        {"name":"stacy","amount":44.80,"date":"01/05/2016"}
+    ];
+
+    var expensesByName = d3.nest()
+        .key(function(d) { return d.name; })
+        .entries(expenses);
+    console.log(expensesByName);
+
+    var expensesCount = d3.nest()
+        .key(function(d) { return d.name; })
+        .rollup(function(v) { return v.length; })
+        .entries(expenses);
+    console.log(JSON.stringify(expensesCount));
+
+    var expensesAvgAmount = d3.nest()
+        .key(function(d) { return d.name; })
+        .rollup(function(v) { return d3.mean(v, function(d) { return d.amount; }); })
+        .entries(expenses);
+    console.log(JSON.stringify(expensesAvgAmount));
+
+    var expenseMetrics = d3.nest()
+        .key(function(d) { return d.name; })
+        .rollup(function(v) { return {
+            count: v.length,
+            total: d3.sum(v, function(d) { return d.amount; }),
+            avg: d3.mean(v, function(d) { return d.amount; })
+        }; })
+        .entries(expenses);
+    console.log(JSON.stringify(expenseMetrics));
+
+
+
+    var expensesTotalObj = d3.nest()
+        .key(function(d) { return d.name; })
+        .rollup(function(v) { return d3.sum(v, function(d) { return d.amount; }); })
+        .object(expenses);
+    console.log(JSON.stringify(expensesTotalObj));
+
+    var expensesTotalMap = d3.nest()
+        .key(function(d) { return d.name; })
+        .rollup(function(v) { return d3.sum(v, function(d) { return d.amount; }); })
+        .map(expenses);
+    console.log(JSON.stringify(expensesTotalMap));
+    console.log(expensesTotalMap.get("carl"));
+
+
+    var expenseMetricsObj = d3.nest()
+        .key(function(d) { return d.name; })
+        .rollup(function(v) { return {
+            count: v.length,
+            total: d3.sum(v, function(d) { return d.amount; }),
+            avg: d3.mean(v, function(d) { return d.amount; })
+        }; })
+        .object(expenses);
+    console.log(JSON.stringify(expenseMetricsObj));
+
+    var expenseMetricsMap = d3.nest()
+        .key(function(d) { return d.name; })
+        .rollup(function(v) { return {
+            count: v.length,
+            total: d3.sum(v, function(d) { return d.amount; }),
+            avg: d3.mean(v, function(d) { return d.amount; })
+        }; })
+        .map(expenses);
+    console.log(JSON.stringify(expenseMetricsMap));
+    console.log(expenseMetricsMap.get("stacy").avg);
+
+
+
+    var expensesByYear = d3.nest()
+        .key(function(d) { return d.date.split("/")[2]; })
+        .rollup(function(v) { return d3.sum(v, function(d) { return d.amount; }); })
+        .object(expenses);
+    console.log(JSON.stringify(expensesByYear));
+
+
+</script>
+</body>
+</html>
