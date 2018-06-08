@@ -20,13 +20,13 @@
 <body>
 
   <svg width="800" height="920">
-    <g class="wrapper" transform="translate(20, 20)">
-        <g class="links"></g>
-        <g class="nodes"></g>
-    </g>
-  </svg>
+		<g class="wrapper" transform="translate(20, 20)">
+			<g class="links"></g>
+			<g class="nodes"></g>
+		</g>
+	</svg>
 
-  <script src="//d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
   <script>
     var treeLayout = d3.tree()
       .size([900, 600]);
@@ -78,6 +78,7 @@
         .append('path')
         .attr('d', link);
     }
+
 
     function ready(err, data) {
       var nest = d3.nest()

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <title>Data join without key function</title>
+</head>
+
+<style>
+  body {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 14px;
+    color: #333;
+  }
+
+  #content {
+    position: relative;
+    height: 40px;
+  }
+
+  #content div {
+    position: absolute;
+    margin: 2px;
+    background-color: orange;
+    color: white;
+    padding: 8px;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+  }
+</style>
+
+<body>
+  <div id="content">
+  </div>
+
+  <div id="menu">
+    <button onClick="doInsert();">Insert element</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+  <script>
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let i = letters.length;
+
+    const update = data => {
+      let u = d3.select('#content')
+        .selectAll('div')
+        .data(data);
+
+      u.enter()
+        .append('div')
+        .merge(u)
+        .transition()
+        .style('left', (d, i) => i * 32 + 'px')
+        .text(d => d);
+    }
+
+    const doInsert = () => {
+      if (i == 0) return;
+
+      let myData = letters.slice(--i).split('');
+      update(myData);
+    }
+
+    doInsert();
+  </script>
+</body>
+
+</html>

@@ -19,8 +19,6 @@
 
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script>
-		const lineGenerator = d3.line();
-
 		let data = [
 			[0, 50],
 			[100, 80],
@@ -28,6 +26,8 @@
 			[300, 60],
 			[400, 30]
 		];
+
+		const lineGenerator = d3.line();
 		let pathString = lineGenerator(data);
 
 		d3.select('path')
